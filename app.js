@@ -10,7 +10,9 @@ var app = express();
 
 // view engine setup
 app.use(express.static(path.join(__dirname, "public")));
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
+app.engine("html", require("ejs").renderFile); 
+app.set("view engine", "html");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,6 +25,12 @@ const corsOptions = {
   credentials: false,
 };
 app.use(cors(corsOptions));
+
+// Manejo de errores - Middleware de manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
 
 // Configura la política de encabezado "Referrer-Policy"
 app.use((req, res, next) => {
