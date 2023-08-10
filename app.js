@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require("cors");
 
 var indexRouter = require('./routes/index');
 
@@ -16,6 +17,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+const corsOptions = {
+  origin: "https://comafipanama.com/",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: false,
+};
+app.use(cors(corsOptions));
 
 app.use('/', indexRouter);
 
