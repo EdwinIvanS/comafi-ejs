@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -19,11 +18,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: "https://comafipanama.com/",
+  origin: "https://comafipanama.com", // Sin la barra al final
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: false,
 };
 app.use(cors(corsOptions));
+
+// Configura la política de encabezado "Referrer-Policy"
+app.use((req, res, next) => {
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
 
 app.use('/', indexRouter);
 
